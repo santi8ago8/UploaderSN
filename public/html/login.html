@@ -1,0 +1,16 @@
+<h1>Login</h1>
+<h3 ng-if="message">{{message}}</h3>
+<form ng-submit="login()">
+
+    <md-text-float label="user" ng-model="user.name"></md-text-float>
+    <md-text-float label="password" ng-model="user.password" type="password"></md-text-float>
+    <md-button type="submit" ng-disabled="isLogging">Login</md-button>
+</form>
+
+<h2>New account</h2>
+<form ng-submit="newUser()">
+    <md-text-float label="user" ng-model="user.name"></md-text-float>
+    <md-text-float label="password" ng-model="user.password" type="password"></md-text-float>
+    <md-text-float label="repeat password" ng-model="user.passwordRe" type="password"></md-text-float>
+    <md-button type="submit" ng-disabled="isLogging">Create user</md-button>
+</form>
