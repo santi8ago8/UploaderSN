@@ -7,9 +7,7 @@ function init() {
         createEvents(socket);
     })
 }
-var comments = [];
 function createEvents(socket) {
-
 
     socket.on('user:login', function (data) {
         db.user.login(data, function (message) {
@@ -33,25 +31,63 @@ function createEvents(socket) {
         socket.session.destroy();
         socket.emit('logout');
     });
+    socket.on('album:get', function (data) {
+        db.album.get(socket.session.user, function (albums) {
+            socket.emit('album:get', albums);
+        })
+    });
+    socket.on('album:create', function (album) {
+        album.owner = socket.session.user;
+        db.album.create(album, function (resp) {
+            socket.emit('album:create', resp);
+        })
+    });
+    socket.on('album:remove', function (data) {
+        db.album.remove(
+            {_id: data, owner: socket.session.user},
+            function (resp) {
+                socket.emit('album:remove', resp);
+            }
+        );
+    });
+    socket.on('photo:get', function (data) {
+        db.photo.get(socket.session.user, function (photos) {
+            socket.emit('photo:get', photos);
+        })
+    });
 
 }
 
 
-module.exports = function (server, cookieParser, session) {
-    io = require('socket.io')(server);
+module.exports = {
+    init: function (server, cookieParser, session) {
+        io = require('socket.io')(server);
 
-    io.use(function (socket, next) {
-        var req = socket.handshake;
-        var res = {};
-        cookieParser(req, res, function (err) {
-            if (err) return next(err);
-            session(req, res, next);
+        io.use(function (socket, next) {
+            var req = socket.handshake;
+            var res = {};
+            cookieParser(req, res, function (err) {
+                if (err) return next(err);
+                session(req, res, next);
+            });
         });
-    });
-    io.use(function (socket, next) {
-        socket.session = socket.handshake.session;
-        next();
-    });
+        io.use(function (socket, next) {
+            socket.session = socket.handshake.session;
+            next();
+        });
+        io.use(function (socket, next) {
+            if (socket.session && socket.session.user) {
+                socket.join(socket.session.user);
+            }
+            next();
+        });
 
-    init();
+        init();
+    },
+    photo: {
+        send: function (photo) {
+            debugger;
+            io.to(photo.proprietor).emit('photo:added', photo);
+        }
+    }
 };

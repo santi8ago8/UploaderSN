@@ -1,7 +1,65 @@
-.comments
-    .comment
-        border-top 1px solid lightgrey
-        display: inline-flex;
-        width: 20%;
-        padding: 8px;
-        box-sizing: border-box;
+.photos
+    text-align center;
+    .inner-photos
+        max-width 1500px;
+        margin auto;
+    .inner-photo
+        padding 3px
+    .photo
+        display: inline-block
+        width 100%
+        img
+            max-width 100%
+    .loading
+        margin-bottom 8px;
+    md-progress-circular
+        margin 8px;
+
+    .file-over
+        border 3px dotted #d7d7d7;
+        -webkit-transition: all 250ms
+        -moz-transition: all 250ms
+        -ms-transition: all 250ms
+        -o-transition: all 250ms
+        transition: all 250ms
+    .file-over.nv-file-over
+        border-color #0024aa;
+
+.album
+    .delete
+        float right
+
+.clear
+    clear both;
+
+//layout sets the default layout on all devices.
+
+@media (max-width: 600px)
+    //layout-sm sets the layout on devices less than 600px wide (phones).
+    .photos
+        .photo
+            width 100%
+
+@media (min-width: 600px)
+    //layout-gt-sm sets the layout on devices greater than 600px wide (bigger than phones).
+
+@media (min-width: 600px) and (max-width: 960px)
+    //layout-md sets the layout on devices between 600px and 960px wide (tablets in portrait).
+    .photos
+        .photo
+            width 50%
+
+@media (min-width: 960px)
+    //layout-gt-md sets the layout on devices greater than 960px wide (bigger than tablets in portrait).
+
+@media (min-width: 960px) and (max-width: 1200px)
+    //layout-lg sets the layout on devices between 960 and 1200px wide (tablets in landscape).
+    .photos
+        .photo
+            width 33.3332%
+
+@media (min-width: 1200px)
+    //layout-gt-lg sets the layout on devices greater than 1200px wide (computers and large screens).
+    .photos
+        .photo
+            width 25%

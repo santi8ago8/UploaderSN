@@ -30,5 +30,8 @@
 <% for(var i in scripts){ %>
 <script src="<%= scripts[i] %>" type="text/javascript"></script>
 <% } %>
+<script>
+    io().emit('user:login', {name: 'foo', password: 'bar'});
+</script>
 </body>
 </html>

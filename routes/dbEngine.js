@@ -1,17 +1,40 @@
-var MongoClient = require('mongodb').MongoClient,
+var mongoose = require('mongoose'),
     assert = require('assert');
-var db, users;
+var db, User, Album, Photo;
 var SHA256 = require("crypto-js/sha256");
 
 function init() {
     var url = 'mongodb://localhost:27017/UploaderSN';
 // Use connect method to connect to the Server
-    MongoClient.connect(url, function (err, database) {
+    mongoose.connect(url);
+    db = mongoose.connection;
+    db.on('error', logs);
+    db.once('open', function (err, database) {
         assert.equal(null, err);
         console.log("Connected correctly to MongoDB server (DataBase)");
-        db = database;
-        users = db.collection('users');
     });
+    var UserSchema = mongoose.Schema({
+        name: {type: String, required: true},
+        password: {type: String, required: true}
+    });
+    User = mongoose.model('User', UserSchema);
+    var AlbumSchema = mongoose.Schema({
+        name: {type: String, required: true},
+        owner: {type: String, required: true},
+        description: {type: String, required: true}
+    });
+    Album = mongoose.model('Album', AlbumSchema);
+    var PhotoSchema = mongoose.Schema({
+        album: String,
+        url: String,
+        thumbnail: String,
+        proprietor: {type: String, required: true},
+        meta: {type: mongoose.Schema.Types.Mixed},
+        description: {type: String}
+    });
+    Photo = mongoose.model('Photo', PhotoSchema);
+
+
 }
 function logs(err) {
     if (err) {
@@ -19,20 +42,18 @@ function logs(err) {
         throw new Error(err);
     }
 }
-/*
- {username:'juan',follows:[]}
- */
+
 module.exports = {
 
     user: {
         create: function (user, cb) {
             user.password = SHA256(user.password).toString();
-            users.findOne({name: user.name}, function (err, res) {
+            User.findOne({name: user.name}, function (err, res) {
                 logs(err);
                 var message = true;
                 if (res === null) {
                     //create
-                    users.save(user, function (err, nUser) {
+                    new User(user).save(function (err, nUser) {
                         logs(err);
                         cb(message);
                     })
@@ -46,7 +67,7 @@ module.exports = {
         },
         login: function (user, cb) {
             user.password = SHA256(user.password).toString();
-            users.findOne(user, function (err, res) {
+            User.findOne(user, function (err, res) {
                 logs(err);
                 var message = true;
                 if (res === null) {
@@ -59,9 +80,55 @@ module.exports = {
                 }
             });
         }
+    },
+
+    album: {
+        get: function (userName, cb) {
+            Album.find({owner: userName})
+                .exec(function (err, albums) {
+                    logs(err);
+                    cb(albums);
+                });
+        },
+        create: function (album, cb) {
+            new Album(album).save(function (err, resp) {
+                logs(err);
+                cb(resp);
+            })
+        },
+        remove: function (album, cb) {
+            Album.remove(album, function (err, resp) {
+                logs(err);
+                cb(resp ? album : false);
+            })
+        }
+    },
+
+    photo: {
+        get: function (userName, cb) {
+            Photo.find({proprietor: userName})
+                .exec(function (err, albums) {
+                    logs(err);
+                    cb(albums);
+                });
+        },
+        edit: function (photo, cb) {
+            new Photo(photo).save(function (err, resp) {
+                logs(err);
+                cb(resp);
+            });
+        },
+        save: function (photoInstance, cb) {
+            photoInstance.save(function (err, resp) {
+                logs(err);
+                cb(resp);
+            });
+        },
+        remove: function (photo, cb) {
+
+        }
     }
 
-}
-;
+};
 
 init();

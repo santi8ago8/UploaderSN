@@ -1,7 +1,7 @@
 /**
  * Basic config
  */
-var app = angular.module('app', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMaterial'])
+var app = angular.module('app', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMaterial','angularFileUpload'])
     .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
         $locationProvider.hashPrefix('!');
         $routeProvider
