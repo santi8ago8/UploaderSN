@@ -1,10 +1,25 @@
 <h1>Photos <span ng-if="photos.length">{{photos.length}}</span></h1>
 <md-content class="photos">
     <md-content class="inner-photos">
-        <div class="photo" ng-repeat="p in photos">
+        <div class="photo" ng-repeat="p in photos | orderBy : '_id'">
             <div class="inner-photo">
-                <img ng-src="{{p.thumbnail}}">
-                {{photo.description}}
+                <img ng-src="{{p.thumbnail}}" ng-click="p.$isEdit=true">
+
+                <div class="overlay" ng-if="p.$isEdit">
+                    <div class="inner-overlay">
+                        <p>Album:
+                            <select ng-model="p.album" ng-change="p.album?doDescription(p):false">
+                                <option value=""></option>
+                                <option value="{{a._id}}" ng-repeat="a in albums">{{a.name}}</option>
+                            </select>
+                        </p>
+
+                        <md-text-float ng-model="p.description" label="Description"></md-text-float>
+                        <md-button class="md-raised md-primary" ng-click="save(p)">Save</md-button>
+                        <md-button class="md-raised" ng-click="p.$isEdit=false">Close</md-button>
+                        <md-button class="md-raised md-warn" ng-click="remove(p)">Delete</md-button>
+                    </div>
+                </div>
             </div>
         </div>
     </md-content>

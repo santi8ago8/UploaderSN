@@ -1,7 +1,7 @@
 /**
  * Basic config
  */
-var app = angular.module('app', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMaterial','angularFileUpload'])
+var app = angular.module('app', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMaterial', 'angularFileUpload'])
     .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
         $locationProvider.hashPrefix('!');
         $routeProvider
@@ -29,7 +29,7 @@ var app = angular.module('app', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMaterial',
             });
 
     }])
-    .run(['$rootScope', function ($rootScope) {
+    .run(['$rootScope', '$location', function ($rootScope, $location) {
         $rootScope.app = {};
         $rootScope.app.user = window['user'];
         //connect to socket.io
@@ -54,6 +54,12 @@ var app = angular.module('app', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMaterial',
                 }
             }
         };
+        $rootScope.$on('$locationChangeStart', function (data) {
+            if ($location.url() != '/login' && !$rootScope.app.isLogged()) {
+                $location.url('/login')
+            }
+
+        });
 
 
     }])

@@ -39,6 +39,16 @@ router.post('/file/upload', function (req, res) {
                         //console.log(exifData); // Do something with your data!
                         //debugger;
                         photo.meta = exifData;
+                        //remove buffers from object.
+                        try {
+                            photo.meta.exif.ExifVersion=photo.meta.exif.ExifVersion.toString();
+                            photo.meta.exif.FileSource=photo.meta.exif.FileSource.toString();
+                            photo.meta.exif.SceneType=photo.meta.exif.SceneType.toString();
+                            photo.meta.exif.CFAPattern=photo.meta.exif.CFAPattern.toString();
+                        }
+                        catch (e) {
+                            console.log(e);
+                        }
                         photo.url = urlPublic;
                         photo.thumbnail = urlThumbnail;
                         gm(url)

@@ -39,22 +39,38 @@ function createEvents(socket) {
     socket.on('album:create', function (album) {
         album.owner = socket.session.user;
         db.album.create(album, function (resp) {
-            socket.emit('album:create', resp);
+            io.to(socket.session.user).emit('album:create', resp);
         })
     });
     socket.on('album:remove', function (data) {
         db.album.remove(
             {_id: data, owner: socket.session.user},
             function (resp) {
-                socket.emit('album:remove', resp);
+                io.to(socket.session.user).emit('album:remove', resp);
             }
         );
     });
     socket.on('photo:get', function (data) {
         db.photo.get(socket.session.user, function (photos) {
-            socket.emit('photo:get', photos);
+            db.album.get(socket.session.user, function (albums) {
+                socket.emit('photo:get', {albums: albums, photos: photos});
+            });
+
         })
     });
+    socket.on('photo:save', function (data) {
+        db.photo.edit(data, function (resp) {
+            io.to(socket.session.user).emit('photo:save', resp ? data : resp);
+        })
+    });
+    socket.on('photo:remove', function (data) {
+        db.photo.remove({
+            _id: data._id,
+            proprietor: socket.session.user
+        }, function (resp) {
+            io.to(socket.session.user).emit('photo:remove', resp ? data._id : resp);
+        })
+    })
 
 }
 

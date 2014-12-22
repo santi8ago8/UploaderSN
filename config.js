@@ -2,7 +2,9 @@ var env = 'dev'; //(dev|prod)
 
 var engineScripts = [
     '/js/socket.io.js',
+    '/js/fraction.js',
     '/js/app.js',
+    '/js/directives/overlayImage.js',
     '/js/controllers/main.js',
     '/js/controllers/nav.js',
     '/js/controllers/albums.js',
@@ -31,7 +33,7 @@ var scripts = {
         '/bower_components/angular-aria/angular-aria.min.js',
         '/bower_components/angular-route/angular-route.min.js',
         '/bower_components/angular-material/angular-material.min.js',
-        '/js/angular-file-upload.min.js'
+        '/public/js/angular-file-upload.min.js'
         //automatically minified all scripts in js public directory.
     ]
 };

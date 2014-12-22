@@ -113,10 +113,16 @@ module.exports = {
                 });
         },
         edit: function (photo, cb) {
-            new Photo(photo).save(function (err, resp) {
-                logs(err);
-                cb(resp);
-            });
+            if (photo._id)
+                Photo.update({_id: photo._id}, photo, function (err, resp) {
+                    logs(err);
+                    cb(resp);
+                });
+            else
+                new Photo(photo).save(function (err, resp) {
+                    logs(err);
+                    cb(resp);
+                });
         },
         save: function (photoInstance, cb) {
             photoInstance.save(function (err, resp) {
@@ -125,7 +131,10 @@ module.exports = {
             });
         },
         remove: function (photo, cb) {
-
+            Photo.remove(photo, function (err, resp) {
+                logs(err);
+                cb(resp);
+            });
         }
     }
 
