@@ -5,7 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var sessionstore = require('sessionstore');
+//var sessionstore = require('sessionstore');
+var RedisStore = require('connect-redis')(session);
 var busboy = require('connect-busboy');
 
 var routes = require('./routes/index');
@@ -29,20 +30,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 var cookieP = cookieParser();
 app.cookieP = cookieP;
 app.use(cookieP);
-var sess = session({
-    secret: 'af680a4607f665a4f6e8ca1fd1e0ed7147ed6123ec214dd1a245095eb3b4a70b4cc1a0c86a04b5dea70a445c285861e4',
-    resave: true,
-    saveUninitialized: true,
-    store: sessionstore.createSessionStore()
-}, {
-    cookie: {
-        path: '/',
-        httpOnly: true,
-        secure: true,
-        maxAge: 10 * 60 * 1000
-    },
-    rolling: true
-});
+var sess = session(
+    {
+        secret: 'af680a4607f665a4f6e8ca1fd1e0ed7147ed6123ec214dd1a245095eb3b4a70b4cc1a0c86a04b5dea70a445c285861e4',
+        resave: true,
+        saveUninitialized: true,
+        store: new RedisStore(require('./config').redisOptions)
+    }, {
+        cookie: {
+            path: '/',
+            httpOnly: true,
+            secure: true,
+            maxAge: 10 * 60 * 1000
+        },
+        rolling: true
+    });
 app.use(sess);
 app.sess = sess;
 

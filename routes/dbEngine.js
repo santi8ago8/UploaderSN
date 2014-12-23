@@ -1,5 +1,7 @@
 var mongoose = require('mongoose'),
-    assert = require('assert');
+    assert = require('assert'),
+    path = require('path'),
+    fs = require('fs');
 var db, User, Album, Photo;
 var SHA256 = require("crypto-js/sha256");
 
@@ -28,6 +30,7 @@ function init() {
         album: String,
         url: String,
         thumbnail: String,
+        medium: String,
         proprietor: {type: String, required: true},
         meta: {type: mongoose.Schema.Types.Mixed},
         description: {type: String}
@@ -131,9 +134,16 @@ module.exports = {
             });
         },
         remove: function (photo, cb) {
-            Photo.remove(photo, function (err, resp) {
+            Photo.findOneAndRemove(photo, function (err, doc) {
                 logs(err);
-                cb(resp);
+                cb(doc);
+
+                fs.unlink(path.join(__dirname + '/../public/', doc.thumbnail));
+                fs.unlink(path.join(__dirname + '/../public/', doc.url));
+                fs.unlink(path.join(__dirname + '/../public/', doc.medium));
+
+                //TODO: remove from disk!.
+
             });
         }
     }

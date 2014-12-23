@@ -1,27 +1,37 @@
 <!DOCTYPE html>
+<!-- With love ♥ by Santi8ago8 (https://github.com/santi8ago8) -->
 <html ng-app="app">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- With love ♥ by Santi8ago8 (https://github.com/santi8ago8) -->
     <title><%= title %></title>
     <link rel="stylesheet" href='/bower_components/angular-material/angular-material.min.css'>
     <link rel="stylesheet" href='/bower_components/angular-material/themes/cyan-theme.css'>
     <link rel="stylesheet" href='/css/style.css'>
 </head>
-<body>
-<md-toolbar class="md-cyan-theme" layout="row" flex>
+<body layout="row">
+<div layout="column" layout-fill>
+    <md-content>
+        <md-toolbar class="md-cyan-theme" layout="row">
 
-    <div class="title" layout="row" layout-align="center center"><span><%= title %></span></div>
+            <div class="title" layout="row" layout-align="center center"><span><%= title %></span>
+                <md-tooltip>
+                    With ♥ by @santi8ago8
+                </md-tooltip>
+            </div>
 
-    <div flex></div>
-    <nav layout="row" style="padding: 8px" ng-controller="NavCtrl" layout-align="center center">
-        <md-button ng-repeat="b in buttons" ng-href="{{b.href}}" class="md-cyan-theme">{{b.text}}</md-button>
-    </nav>
-</md-toolbar>
-<md-content class="md-padding">
+            <div flex></div>
+            <nav layout="row" style="padding: 8px" ng-controller="NavCtrl" layout-align="center center">
+                <md-button ng-repeat="b in buttons" ng-href="{{b.href}}" class="md-cyan-theme">{{b.text}}</md-button>
+            </nav>
+        </md-toolbar>
+        <md-content class="md-padding" flex>
 
-    <md-content ng-view></md-content>
-</md-content>
+            <md-content ng-view></md-content>
+        </md-content>
+    </md-content>
+</div>
 <script>
     <% if (user) { %>
     window.user = {name: '<%= user %>'};

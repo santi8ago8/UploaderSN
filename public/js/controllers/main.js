@@ -1,6 +1,6 @@
 app.controller('MainCtrl',
-    ['$scope', '$rootScope', 'scopeApply', '$location', 'FileUploader',
-        function ($scope, $rootScope, scopeApply, $location, FileUploader) {
+    ['$scope', '$rootScope', 'scopeApply', '$location', 'FileUploader', '$imgViewer',
+        function ($scope, $rootScope, scopeApply, $location, FileUploader, $imgViewer) {
 
             $scope.photos = [];
             $scope.albums = [];
@@ -83,7 +83,6 @@ app.controller('MainCtrl',
             $scope.save = function (p) {
                 var send = angular.copy(p);
                 delete send.$isEdit;
-                console.log(send);
                 $rootScope.app.io.emit('photo:save', send);
             };
 
@@ -116,6 +115,10 @@ app.controller('MainCtrl',
                 });
             };
 
+            $scope.open = function (index, ev) {
+                //debugger;
+                $imgViewer.open($scope.photos, index, ev);
+            };
 
             $rootScope.app.io.on('photo:get', $scope.socket_get);
             $rootScope.app.io.on('photo:added', $scope.socket_added);

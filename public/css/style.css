@@ -1,3 +1,6 @@
+.title {
+  padding: 0 16px;
+}
 .photos {
   text-align: center;
 }
@@ -63,6 +66,15 @@
 }
 .photos .file-over.nv-file-over {
   border-color: #0024aa;
+}
+md-dialog {
+  max-width: 95%;
+  max-height: 95%;
+}
+md-dialog img {
+  max-width: 100%;
+  vertical-align: middle;
+/* okay see it in middle , but you can tune this */
 }
 .album .delete {
   float: right;

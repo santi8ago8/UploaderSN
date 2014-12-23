@@ -26,12 +26,15 @@ router.post('/file/upload', function (req, res) {
 
             var url = __dirname + '/../public/img/photos/' + photo._id + path.extname(filename);
             var urlPublic = '/img/photos/' + photo._id + path.extname(filename);
+            var urlMediumMachine = __dirname + '/../public/img/photos/' + photo._id + '_m' + path.extname(filename);
+            var urlMedium = '/img/photos/' + photo._id + '_m' + path.extname(filename);
             var urlThumbnailMachine = __dirname + '/../public/img/photos/' + photo._id + '_t' + path.extname(filename);
             var urlThumbnail = '/img/photos/' + photo._id + '_t' + path.extname(filename);
             //Path where image will be uploaded
             fstream = fs.createWriteStream(url);
             file.pipe(fstream);
             fstream.on('close', function () {
+                //TODO: ver la posibilidad de usar gm-exif para traer los datos.
                 new ExifImage({ image: url }, function (error, exifData) {
                     if (error)
                         console.log('Error: ' + error.message);
@@ -41,16 +44,17 @@ router.post('/file/upload', function (req, res) {
                         photo.meta = exifData;
                         //remove buffers from object.
                         try {
-                            photo.meta.exif.ExifVersion=photo.meta.exif.ExifVersion.toString();
-                            photo.meta.exif.FileSource=photo.meta.exif.FileSource.toString();
-                            photo.meta.exif.SceneType=photo.meta.exif.SceneType.toString();
-                            photo.meta.exif.CFAPattern=photo.meta.exif.CFAPattern.toString();
+                            photo.meta.exif.ExifVersion = photo.meta.exif.ExifVersion.toString();
+                            photo.meta.exif.FileSource = photo.meta.exif.FileSource.toString();
+                            photo.meta.exif.SceneType = photo.meta.exif.SceneType.toString();
+                            photo.meta.exif.CFAPattern = photo.meta.exif.CFAPattern.toString();
                         }
                         catch (e) {
                             console.log(e);
                         }
                         photo.url = urlPublic;
                         photo.thumbnail = urlThumbnail;
+                        photo.medium = urlMedium;
                         gm(url)
                             //-resize 580^x384 -gravity center -extent 580x384 -gravity center
                             .resize(580 + '^', 384)//ancho de 580 px.
@@ -61,11 +65,22 @@ router.post('/file/upload', function (req, res) {
                                 if (err)
                                     console.log(err);
                                 else {
-                                    db.photo.save(photo, function (photoWithMeta) {
-                                        //send event to socket.
-                                        sockets.photo.send(photo.toObject());
-                                        res.send({});
-                                    });
+                                    gm(url)
+                                        .resize(50 + '%')
+                                        .quality(80)
+                                        .write(urlMediumMachine, function (err) {
+                                            if (err)
+                                                console.log(err);
+                                            else {
+                                                db.photo.save(photo, function (photoWithMeta) {
+                                                    res.send({ok: true});
+                                                    //send event to socket.
+                                                    sockets.photo.send(photo.toObject());
+                                                });
+                                            }
+                                        });
+
+
                                 }
                             });
 
