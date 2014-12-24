@@ -4,18 +4,18 @@
 .photos {
   text-align: center;
 }
-.photos .inner-photos {
+.inner-photos {
   max-width: 1500px;
   margin: auto;
 }
-.photos .inner-photo {
+.inner-photo {
   padding: 3px;
   position: relative;
 }
-.photos .inner-photo img {
+.inner-photo img {
   vertical-align: middle;
 }
-.photos .inner-photo .overlay {
+.inner-photo .overlay {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -23,40 +23,40 @@
   left: 0px;
   padding: 3px;
 }
-.photos .inner-photo .overlay .inner-overlay {
+.inner-photo .overlay .inner-overlay {
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.7);
   color: #fff;
   text-align: left;
 }
-.photos .inner-photo .overlay .inner-overlay p {
+.inner-photo .overlay .inner-overlay p {
   margin: 0 8px 8px 8px;
 }
-.photos .inner-photo .overlay .inner-overlay md-input-group {
+.inner-photo .overlay .inner-overlay md-input-group {
   width: 100%;
 }
-.photos .inner-photo .overlay .inner-overlay md-input-group label {
+.inner-photo .overlay .inner-overlay md-input-group label {
   color: rgba(255,255,255,0.7);
 }
-.photos .inner-photo .overlay .inner-overlay md-input-group input {
+.inner-photo .overlay .inner-overlay md-input-group input {
   width: 100%;
   color: #fff;
 }
-.photos .photo {
+.photo {
   display: inline-block;
   width: 100%;
 }
-.photos .photo img {
+.photo img {
   max-width: 100%;
 }
-.photos .loading {
+.loading {
   margin-bottom: 8px;
 }
-.photos md-progress-circular {
+md-progress-circular {
   margin: 8px;
 }
-.photos .file-over {
+.file-over {
   border: 3px dotted #d7d7d7;
   -webkit-transition: all 250ms;
   -moz-transition: all 250ms;
@@ -64,7 +64,7 @@
   -o-transition: all 250ms;
   transition: all 250ms;
 }
-.photos .file-over.nv-file-over {
+.file-over.nv-file-over {
   border-color: #0024aa;
 }
 md-dialog {
@@ -78,27 +78,28 @@ md-dialog img {
 }
 .album .delete {
   float: right;
+  margin-left: 4px;
 }
 .clear {
   clear: both;
 }
 @media (max-width: 600px) {
-  .photos .photo {
+  .photo {
     width: 100%;
   }
 }
 @media (min-width: 600px) and (max-width: 960px) {
-  .photos .photo {
+  .photo {
     width: 50%;
   }
 }
 @media (min-width: 960px) and (max-width: 1200px) {
-  .photos .photo {
+  .photo {
     width: 33.3332%;
   }
 }
 @media (min-width: 1200px) {
-  .photos .photo {
+  .photo {
     width: 25%;
   }
 }

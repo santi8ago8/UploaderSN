@@ -34,7 +34,6 @@ router.post('/file/upload', function (req, res) {
             fstream = fs.createWriteStream(url);
             file.pipe(fstream);
             fstream.on('close', function () {
-                //TODO: ver la posibilidad de usar gm-exif para traer los datos.
                 new ExifImage({ image: url }, function (error, exifData) {
                     if (error)
                         console.log('Error: ' + error.message);

@@ -42,6 +42,13 @@ app.controller('albumsCtrl', ['$scope', '$rootScope', 'scopeApply', function ($s
         })
     };
 
+    $scope.view = function (album) {
+        if (!album.$view)
+            album.$view = true;
+        else
+            album.$view = false;
+    };
+
     $scope.$on('$destroy', function (event) {
         $rootScope.app.io.off('album:get', $scope.get);
         $rootScope.app.io.off('album:create', $scope.socket_create);

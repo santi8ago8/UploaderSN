@@ -108,8 +108,13 @@ module.exports = {
     },
 
     photo: {
-        get: function (userName, cb) {
-            Photo.find({proprietor: userName})
+        get: function (userName, data, cb) {
+            var q = {proprietor: userName};
+            if (data.album != 'all') {
+                q.album = data.album;
+            }
+            Photo.find(q)
+                .sort({_id: 1})
                 .exec(function (err, albums) {
                     logs(err);
                     cb(albums);
@@ -141,8 +146,6 @@ module.exports = {
                 fs.unlink(path.join(__dirname + '/../public/', doc.thumbnail));
                 fs.unlink(path.join(__dirname + '/../public/', doc.url));
                 fs.unlink(path.join(__dirname + '/../public/', doc.medium));
-
-                //TODO: remove from disk!.
 
             });
         }

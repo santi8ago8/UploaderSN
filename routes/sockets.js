@@ -51,9 +51,9 @@ function createEvents(socket) {
         );
     });
     socket.on('photo:get', function (data) {
-        db.photo.get(socket.session.user, function (photos) {
+        db.photo.get(socket.session.user, data, function (photos) {
             db.album.get(socket.session.user, function (albums) {
-                socket.emit('photo:get', {albums: albums, photos: photos});
+                socket.emit('photo:get:' + data.album, {albums: albums, photos: photos});
             });
 
         })

@@ -4,7 +4,9 @@
     <md-card ng-repeat="a in albums">
         <strong>{{a.name}}</strong> {{a.description}}
         <md-button class="md-raised md-warn delete" ng-click="remove(a._id)">Delete</md-button>
+        <md-button class="md-raised delete" ng-click="view(a)">View</md-button>
         <div class="clear"></div>
+        <photo-wall ng-if="a.$view" album="{{a._id}}"></photo-wall>
     </md-card>
     <form ng-submit="newAlbum()">
         <h3>New album</h3>

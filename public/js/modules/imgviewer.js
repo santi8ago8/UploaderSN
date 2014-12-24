@@ -71,17 +71,3 @@ app.provider('$imgViewer', [function () {
     }]
 
 }]);
-
-app.directive('hammerSwipe',function() {
-    return{
-        restrict:'A',
-        link:function($scope,element,attrs) {
-            //TODO: do!
-            Hammer(element[0]).on('swipeleft',function() {
-                //fake event.
-                $scope.keyPress({keyCode:65});
-            })
-        }
-
-    }
-});

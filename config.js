@@ -5,6 +5,7 @@ var engineScripts = [
     '/js/fraction.js',
     '/js/app.js',
     '/js/modules/imgviewer.js',
+    '/js/directives/photoWall.js',
     '/js/controllers/main.js',
     '/js/controllers/nav.js',
     '/js/controllers/albums.js',
