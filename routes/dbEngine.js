@@ -122,11 +122,14 @@ module.exports = {
                 });
         },
         edit: function (photo, cb) {
-            if (photo._id)
-                Photo.update({_id: photo._id}, photo, function (err, resp) {
+            if (photo._id) {
+                var id = photo._id;
+                delete photo._id;
+                Photo.update({_id: id}, photo, function (err, resp) {
                     logs(err);
                     cb(resp);
                 });
+            }
             else
                 new Photo(photo).save(function (err, resp) {
                     logs(err);
