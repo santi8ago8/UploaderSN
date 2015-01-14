@@ -125,10 +125,9 @@ module.exports = {
             if (photo._id) {
                 var id = photo._id;
                 delete photo._id;
-                Photo.update({_id: photo._id}, photo, function (err, resp) {
+                Photo.update({_id: id}, photo, function (err, resp) {
                     logs(err);
                     photo._id = id;
-                    console.log(id);
                     cb(resp);
                 });
             }
