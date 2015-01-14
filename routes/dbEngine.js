@@ -31,6 +31,7 @@ function init() {
         url: String,
         thumbnail: String,
         medium: String,
+        published: {type: Boolean, default: false},
         proprietor: {type: String, required: true},
         meta: {type: mongoose.Schema.Types.Mixed},
         description: {type: String}

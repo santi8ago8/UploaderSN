@@ -15,6 +15,14 @@
 .inner-photo img {
   vertical-align: middle;
 }
+.inner-photo .published {
+  color: #fff;
+  position: absolute;
+  right: 8px;
+  bottom: 4px;
+  text-shadow: 0px 0px 6px #008000, 0px 0px 6px #f00;
+  text-transform: uppercase;
+}
 .inner-photo .overlay {
   position: absolute;
   width: 100%;

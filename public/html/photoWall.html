@@ -2,7 +2,7 @@
     <div class="photo" ng-repeat="p in photos">
         <div class="inner-photo">
             <img ng-src="{{p.thumbnail}}" ng-click="p.$isEdit=true">
-
+            <span class="published" ng-show="p.published">Published</span>
             <div class="overlay" ng-if="p.$isEdit">
                 <div class="inner-overlay">
                     <p>Album:
@@ -12,11 +12,12 @@
                         </select>
                     </p>
 
-                    <md-text-float ng-model="p.description" label="Description"></md-text-float>
+                    <md-text-float ng-model="p.description" label="Description" ng-click="selectText($event)"></md-text-float>
                     <md-button class="md-raised md-primary" ng-click="save(p)">Save</md-button>
                     <md-button class="md-raised md-primary" ng-click="open($index,$event)">Open</md-button>
                     <md-button class="md-raised" ng-click="p.$isEdit=false">Close</md-button>
                     <md-button class="md-raised md-warn" ng-click="remove(p)">Delete</md-button>
+                    <md-button class="md-raised md-warn" ng-click="published(p)">Pub</md-button>
                     <md-button class="md-raised md-warn" ng-href="{{p.medium}}" download>Download</md-button>
                 </div>
             </div>

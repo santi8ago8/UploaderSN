@@ -1,6 +1,12 @@
 app.controller('photoWallCtrl', ['$scope', '$rootScope', 'scopeApply', '$imgViewer', '$element', '$timeout',
     function ($scope, $rootScope, scopeApply, $imgViewer, $element, $timeout) {
 
+
+        $scope.selectText = function (ev) {
+            if (ev.target.nodeName.toLocaleLowerCase() == 'input')
+                ev.target.select()
+        };
+
         $scope.socket_get = function (data) {
             scopeApply.apply($scope, function () {
                 $scope.photos = data.photos;
@@ -31,6 +37,15 @@ app.controller('photoWallCtrl', ['$scope', '$rootScope', 'scopeApply', '$imgView
                 }
             }
 
+        };
+
+        $scope.published = function (p) {
+            if (!p.published) {
+                p.published = true;
+            } else {
+                p.published = !p.published;
+            }
+            $scope.save(p);
         };
 
         $scope.save = function (p) {
