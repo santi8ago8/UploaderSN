@@ -2,11 +2,6 @@ app.controller('photoWallCtrl', ['$scope', '$rootScope', 'scopeApply', '$imgView
     function ($scope, $rootScope, scopeApply, $imgViewer, $element, $timeout) {
 
 
-        $scope.selectText = function (ev) {
-            if (ev.target.nodeName.toLocaleLowerCase() == 'input')
-                ev.target.select()
-        };
-
         $scope.socket_get = function (data) {
             scopeApply.apply($scope, function () {
                 $scope.photos = data.photos;
@@ -57,18 +52,21 @@ app.controller('photoWallCtrl', ['$scope', '$rootScope', 'scopeApply', '$imgView
         $scope.socket_save = function (photo) {
 
             scopeApply.apply($scope, function () {
-                var added = false;
-                for (var i = 0; i < $scope.photos.length; i++) {
-                    var p = $scope.photos[i];
-                    if (p._id == photo._id) {
-                        var isEd = $scope.photos[i].$isEdit;
-                        $scope.photos[i] = photo;
-                        $scope.photos[i].$isEdit = isEd;
-                        added = true;
+                if ($scope.album == 'all' || $scope.album == photo.album) {
+                    var added = false;
+
+                    for (var i = 0; i < $scope.photos.length; i++) {
+                        var p = $scope.photos[i];
+                        if (p._id == photo._id) {
+                            var isEd = $scope.photos[i].$isEdit;
+                            $scope.photos[i] = photo;
+                            $scope.photos[i].$isEdit = isEd;
+                            added = true;
+                        }
                     }
-                }
-                if (!added) {
-                    $scope.photos.push(photo);
+                    if (!added) {
+                        $scope.photos.push(photo);
+                    }
                 }
             });
 
