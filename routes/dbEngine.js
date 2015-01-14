@@ -123,8 +123,10 @@ module.exports = {
         },
         edit: function (photo, cb) {
             if (photo._id) {
+                console.log(photo._id);
                 Photo.update({_id: photo._id}, photo, function (err, resp) {
                     logs(err);
+                    console.log(resp._id);
                     cb(resp);
                 });
             }
